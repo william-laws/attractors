@@ -1,14 +1,14 @@
 import random
 import pygame
 
-class Lorenz:
+class Rossler:
     def __init__(self):
         self.xMin, self.xMax = -30, 30
         self.yMin, self.yMax = -30, 30
         self.zMin, self.zMax = 0, 50
-        self.X, self.Y, self.Z = 0.1, 0.0, 0.0
+        self.X, self.Y, self.Z = 10.0, 0.0, 10.0
         self.oX, self.oY, self.oZ = self.X, self.Y, self.Z
-        self.dt = 0.01
+        self.dt = 0.05
         self.a, self.b, self.c = 0.2, 0.2, 5.7
         self.pixelColor = (255, 0, 0)
 
@@ -44,7 +44,7 @@ class Application:
 
     def on_init(self):
         pygame.init()
-        pygame.display.set_caption("Lorenz Attractor")
+        pygame.display.set_caption("Rossler Attractor")
         self.displaySurface = pygame.display.set_mode(self.size)
         self.isRunning = True
         self.fpsClock = pygame.time.Clock()
@@ -56,7 +56,7 @@ class Application:
         color.append((153,51,255))
 
         for i in range(0,3):
-            self.attractors.append(Lorenz())
+            self.attractors.append(Rossler())
             self.attractors[i].X = random.uniform(-0.1,0.1)
             self.attractors[i].pixelColor = color[i]
 

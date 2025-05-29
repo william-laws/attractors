@@ -1,25 +1,22 @@
 import random
 import pygame
-import math
 
-print(pygame.version.ver)
-
-class Thomas:
+class Rabinovich:
     def __init__(self):
-        self.xMin, self.xMax = -10, 10
-        self.yMin, self.yMax = -10, 10
-        self.zMin, self.zMax = 0, 30
-        self.X, self.Y, self.Z = 1.1, 1.1, -0.01
+        self.xMin, self.xMax = -30, 30
+        self.yMin, self.yMax = -30, 30
+        self.zMin, self.zMax = 0, 50
+        self.X, self.Y, self.Z = -1, 0.0, 0.5
         self.oX, self.oY, self.oZ = self.X, self.Y, self.Z
         self.dt = 0.01
-        self.b = 0.208186
+        self.a, self.b  = 0.14, 0.10
         self.pixelColor = (255, 0, 0)
 
     def step(self):
         self.oX, self.oY, self.oZ = self.X, self.Y, self.Z
-        self.X = self.X + (self.dt * (math.sin(self.Y) - (self.b * self.X)))
-        self.Y = self.Y + (self.dt * (math.sin(self.Z) - (self.b * self.Y)))
-        self.Z = self.Z + (self.dt * (math.sin(self.X) - (self.b * self.Z)))
+        self.X = self.X + (self.dt * (self.Y * (self.Z - 1 + (self.X**2)) + (self.b * self.X)))
+        self.Y = self.Y + (self.dt * (self.X * (3 * self.Z + 1 - self.X**2) + (self.b * self.Y)))
+        self.Z = self.Z + (self.dt * (-2 * self.Z * (self.a + self.X * self.Y)))
 
     def draw(self, displaySurface):
         width, height = displaySurface.get_size()
@@ -47,7 +44,7 @@ class Application:
 
     def on_init(self):
         pygame.init()
-        pygame.display.set_caption("Thomas Attractor")
+        pygame.display.set_caption("Rabinovich Attractor")
         self.displaySurface = pygame.display.set_mode(self.size)
         self.isRunning = True
         self.fpsClock = pygame.time.Clock()
@@ -59,7 +56,7 @@ class Application:
         color.append((153,51,255))
 
         for i in range(0,3):
-            self.attractors.append(Thomas())
+            self.attractors.append(Rabinovich())
             self.attractors[i].X = random.uniform(-0.1,0.1)
             self.attractors[i].pixelColor = color[i]
 

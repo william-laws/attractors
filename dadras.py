@@ -1,25 +1,22 @@
 import random
 import pygame
-import math
 
-print(pygame.version.ver)
-
-class Thomas:
+class Dadras:
     def __init__(self):
-        self.xMin, self.xMax = -10, 10
-        self.yMin, self.yMax = -10, 10
-        self.zMin, self.zMax = 0, 30
-        self.X, self.Y, self.Z = 1.1, 1.1, -0.01
+        self.xMin, self.xMax = -20, 20
+        self.yMin, self.yMax = -20, 20
+        self.zMin, self.zMax = 0, 20
+        self.X, self.Y, self.Z = 1.1, 2.1, -2.0
         self.oX, self.oY, self.oZ = self.X, self.Y, self.Z
         self.dt = 0.01
-        self.b = 0.208186
+        self.a, self.b, self.c, self.d, self.e = 3, 2.7, 1.7, 2.0, 9.0
         self.pixelColor = (255, 0, 0)
 
     def step(self):
         self.oX, self.oY, self.oZ = self.X, self.Y, self.Z
-        self.X = self.X + (self.dt * (math.sin(self.Y) - (self.b * self.X)))
-        self.Y = self.Y + (self.dt * (math.sin(self.Z) - (self.b * self.Y)))
-        self.Z = self.Z + (self.dt * (math.sin(self.X) - (self.b * self.Z)))
+        self.X = self.X + (self.dt * (self.Y - (self.a * self.X) + (self.b * self.Y * self.Z)))
+        self.Y = self.Y + (self.dt * ((self.c * self.Y) - (self.X * self.Z) - self.Z))
+        self.Z = self.Z + (self.dt * ((self.d * self.X * self.Y) - (self.e * self.Z)))
 
     def draw(self, displaySurface):
         width, height = displaySurface.get_size()
@@ -47,7 +44,7 @@ class Application:
 
     def on_init(self):
         pygame.init()
-        pygame.display.set_caption("Thomas Attractor")
+        pygame.display.set_caption("Dadras Attractor")
         self.displaySurface = pygame.display.set_mode(self.size)
         self.isRunning = True
         self.fpsClock = pygame.time.Clock()
@@ -59,7 +56,7 @@ class Application:
         color.append((153,51,255))
 
         for i in range(0,3):
-            self.attractors.append(Thomas())
+            self.attractors.append(Dadras())
             self.attractors[i].X = random.uniform(-0.1,0.1)
             self.attractors[i].pixelColor = color[i]
 
